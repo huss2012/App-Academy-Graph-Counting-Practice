@@ -24,7 +24,6 @@ function getNeighbors(row, col, matrix) {
 }
 
 function countIslands(matrix) {
-
   // Create a visited set to store visited nodes
   // Initialize count to 0
   // Iterate through all indices in matrix
@@ -41,8 +40,32 @@ function countIslands(matrix) {
             // Add neighbor to stack
             // Mark neighbor as visited
   // Return island count
-
   // Your code here
+  let visited = new Set();
+  let count = 0;
+  for (let row = 0; row < matrix.length; row++){
+    for (let col = 0; col < matrix[0].length; col++){
+      if (matrix[row][col] === 1 && !visited.has(`${row},${col}`)) {
+        count++;
+
+        let stack = [[row, col]];
+        visited.add(`${row},${col}`);
+
+        while (stack.length > 0) {
+          let [currentRow, currentCol] = stack.pop();
+          let neighbors = getNeighbors(currentRow, currentCol, matrix);
+
+          for (let [currentRow, currentCol] of neighbors) {
+            if (!visited.has(`${currentRow},${currentCol}`)) {
+              stack.push([currentRow, currentCol]);
+              visited.add(`${currentRow},${currentCol}`);
+            }
+          }
+        }
+      }
+    }
+  }
+  return count;
 }
 
 // Uncomment the lines below for local testing
